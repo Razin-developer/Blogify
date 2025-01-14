@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const { setToken } = require("../services/jwt");
+const bcrypt = require('bcrypt')
 
 async function handleUserGoogleLogin(req, res) {
   const email = req.user.emails[0].value;
