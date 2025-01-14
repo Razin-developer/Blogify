@@ -1,0 +1,66 @@
+{{!-- Blog Content Section --}}
+<section class="blog-content py-5">
+  <div class="container">
+    <h1 class="text-center mb-4">{{blog.title}}</h1>
+    <div class="text-center mb-3">
+      <p class="text-muted">By <strong>{{blog.createdBy.name}}</strong> | Published on {{blog.createdAt}}</p>
+    </div>
+    <div class="text-center">
+      <img src="{{blog.imageUrl}}" alt="{{blog.title}}" class="img-fluid rounded shadow-sm mb-4">
+    </div>
+    <div class="content">
+      <p>{{blog.description}}</p>
+    </div>
+    {{#if blogAdmin}}
+    <div class="text-center m-4">
+      <a href="/blog/{{blog._id}}/edit" class="btn btn-primary">Edit Blog</a>
+      <a href="/blog/{{blog._id}}/delete" class="btn btn-danger">Delete Blog</a>
+    </div>
+    {{/if}}
+  </div>
+</section>
+
+{{!-- Comments Section --}}
+<section class="comments-section bg-light py-5">
+  <div class="container">
+    <h2 class="mb-4">Comments</h2>
+
+    {{#if blog.comments.length}}
+    <ul class="list-group mb-4">
+      {{#each blog.comments}}
+      <li class="list-group-item">
+        <p><strong>{{this.author.name}}</strong> said:</p>
+        <p>{{this.comment}}</p>
+        <p class="text-muted small">{{this.createdAt}}</p>
+        {{#if this.commentAdmin}}
+        <a href="/blog/{{../blog._id}}/comment/{{this._id}}/delete" class="btn btn-danger btn-sm"><span
+            class="material-symbols-outlined">
+            delete
+          </span></a>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="text-muted">No comments yet. Be the first to comment!</p>
+    {{/if}}
+
+    {{!-- Comment Form --}}
+    <form action="/blog/{{blog._id}}/comment" method="POST" class="mt-4">
+      <div class="mb-3">
+        <label for="commentText" class="form-label">Your Comment</label>
+        <textarea class="form-control" id="commentText" name="comment" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Post Comment</button>
+    </form>
+  </div>
+</section>
+
+{{!-- Footer --}}
+<footer class="bg-dark text-light py-3 text-center">
+  <p>&copy; 2025 Blogify. All rights reserved.</p>
+</footer>
+
+<script>
+  console.log({{ blog.imageUrl }})
+</script>

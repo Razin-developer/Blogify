@@ -1,0 +1,42 @@
+<div class="container my-5">
+  <div class="card mx-auto p-4 shadow-lg" style="max-width: 500px; border-radius: 15px;">
+    <div class="text-center">
+      <img 
+        src="{{user.imageUrl}}" 
+        alt="Profile Image" 
+        class="rounded-circle mb-3" 
+        style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #007bff;"
+      >
+      <h2 class="text-primary">{{user.name}}</h2>
+      <p class="text-muted">{{user.email}}</p>
+    </div>
+
+    <hr>
+
+    <!-- Update Profile Image -->
+    <form action="/user/update-image" method="POST" enctype="multipart/form-data" class="mb-4">
+      <div class="mb-3">
+        <label for="profileImage" class="form-label fw-bold">Change Profile Image:</label>
+        <input 
+          type="file" 
+          name="profileImage" 
+          class="form-control" 
+          id="profileImage" 
+          required 
+          style="border-radius: 10px;"
+        >
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update Image</button>
+    </form>
+
+    <!-- Logout Button -->
+    <form action="/user/logout" method="GET" class="mb-3">
+      <button type="submit" class="btn btn-secondary w-100">Logout</button>
+    </form>
+
+    <!-- Delete Account Button -->
+    <form action="/user/delete" method="GET">
+      <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+    </form>
+  </div>
+</div>

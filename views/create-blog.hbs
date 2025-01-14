@@ -1,0 +1,24 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Create A Blog</h2>
+<form action="/blog/create" method="POST" enctype="multipart/form-data">
+  <div class="form-group mt-3">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" aria-describedby="emailHelp" name="title" placeholder="Enter Title">
+  </div>
+  <div class="form-group mt-3">
+    <label for="short-descriptionInput">Short Description</label>
+    <textarea type="text" class="form-control" id="short-descriptionInput" name="shortDescription" placeholder="Short Description" style="height: 75px;"></textarea>
+  </div>
+  <div class="form-group mt-3">
+    <label for="descriptionInput">Description</label>
+    <textarea type="text" class="form-control" id="descriptionInput" name="description" placeholder="Description" style="height: 100px;"></textarea>
+  </div>
+  <div class="form-group mt-3">
+    <label for="imageInput">Image</label>
+    <input type="file" class="form-control" id="imageInput" name="image" placeholder="Image">
+  </div>
+  <div class="text-center mt-4">
+   <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+</div>
