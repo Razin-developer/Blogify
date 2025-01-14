@@ -80,6 +80,7 @@ app.get("/", authenticate, async (req, res) => {
   return res.render("home", {
     user: req.user,
     blogs,
+    specialAttension: req.session.specialAttension,
   });
 });
 
