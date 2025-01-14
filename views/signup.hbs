@@ -42,6 +42,16 @@
                     </div>
                   </div>
 
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <a href="/auth/google/auth" class="google-btn">
+                        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo">
+                        <span>Continue with Google</span>
+                      </a>
+                    </div>
+                  </div>
+
                   <div class="form-check d-flex justify-content-center mb-5">
                     <label class="form-check-label" for="form2Example3">
                       Already have an account ? <a href="/login">Login</a>
@@ -72,3 +82,33 @@
     </div>
   </div>
 </section>
+
+<style>
+  a {
+    text-decoration: none;
+  }
+
+  .google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    color: #333333;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+
+  .google-btn img {
+    width: 30px;
+    margin-right: 10px;
+  }
+
+  .google-btn:hover {
+    background-color: #f1f1f1;
+  }
+</style>

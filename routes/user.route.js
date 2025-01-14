@@ -1,5 +1,5 @@
 const express = require("express")
-const { handleUserLogin , handleUserSignup , handleUserLogout , handleUserdelete , handleUserView, handleUserUpdateImage, handleUserForgot, handleUserForgotSuccess } = require('../controllers/user.controller.js');
+const { handleUserLogin , handleUserSignup , handleUserLogout , handleUserdelete , handleUserView, handleUserUpdateImage, handleUserForgot, handleUserForgotSuccess, handleUserGoogleLogin } = require('../controllers/user.controller.js');
 const authorize = require("../middlewares/authorize.middleware.js");
 const upload = require("../middlewares/upload-profile.middleware.js");
 

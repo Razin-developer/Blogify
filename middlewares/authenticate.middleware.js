@@ -2,6 +2,7 @@ const { setToken , getPayload } = require("../services/jwt.js")
 
 function authenticate(req, res, next) {
   const token = req.session.token;
+  req.user = null
   try {
     if (token) {
       const user = getPayload(token)

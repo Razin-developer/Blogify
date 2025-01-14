@@ -21,7 +21,7 @@ async function handleUserLogin(req, res) {
 
 async function handleUserSignup(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirm } = req.body;
     if (!name || !email || !password)
       return res.render("signup", { err: "All fields are required" });
     else if (password.length < 6)
@@ -38,6 +38,10 @@ async function handleUserSignup(req, res) {
       });
     else if (!email.includes("@"))
       return res.render("signup", { err: "Invalid Email Address" });
+    else if (await User.findOne({email}))
+      return res.render("signup", { err: "Email Address is already logged" });
+    else if (password !== confirm)
+      return res.render("signup", { err: "Passwords do not match Confirm Password" });
 
     bcrypt.genSalt(10, function (err, salt) {
       bcrypt.hash(password, salt, async function (err, hash) {
