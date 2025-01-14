@@ -2,7 +2,8 @@
   <div class="card mx-auto p-4 shadow-lg" style="max-width: 500px; border-radius: 15px;">
     <div class="text-center">
       <img 
-        src="{{user.imageUrl}}" 
+        src="{{user.imageUrl}}"
+        id="img" 
         alt="Profile Image" 
         class="rounded-circle mb-3" 
         style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #007bff;"
@@ -24,9 +25,10 @@
           id="profileImage" 
           required 
           style="border-radius: 10px;"
+          onchange="viewImage(event)"
         >
       </div>
-      <button type="submit" class="btn btn-primary w-100">Update Image</button>
+      <button id="submit-button" type="submit" class="btn btn-primary w-100">Update Image</button>
     </form>
 
     <!-- Logout Button -->
@@ -40,3 +42,10 @@
     </form>
   </div>
 </div>
+
+<script>
+  function viewImage (event) {
+    document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
+    document.getElementById('submit-button').textContent += " (It's a temporary change. for every time click me)"
+  }
+</script>
