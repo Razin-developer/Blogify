@@ -44,8 +44,15 @@
 </div>
 
 <script>
+  const deleteForm = document.querySelector('form[action="/user/delete"]')
+
   function viewImage (event) {
     document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
     document.getElementById('submit-button').textContent += " (It's a temporary change. for every time click me)"
   }
+
+  deleteForm.addEventListener('submit', (event) => {
+    const isConfirmed = confirm('Are you sure you want to delete your account?')
+    if (!isConfirmed) event.preventDefault()
+  })
 </script>
