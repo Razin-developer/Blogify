@@ -37,13 +37,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Session setup
+const MongoStore = require("connect-mongo");
+
 app.use(
   session({
-    secret: "razinrichu123", // A secret key used for signing the session ID cookie
+    secret: "razinrichu123", // Your secret key
     resave: false,
-    saveUninitialized: false, // Prevents saving uninitialized sessions
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 15, secure: false, httpOnly: true }, // Sets the cookie expiration time in milliseconds
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: "mongodb+srv://Razin:9kjjkUdOaZ3aPPjh@chat.lv15l.mongodb.net/sessionBlogify?retryWrites=true&w=majority&appName=Chat", // Replace with your MongoDB connection URL
+      ttl: 15 * 24 * 60 * 60, // Time to live (in seconds) for session (15 days)
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days
+      secure: false, // Use secure cookies in production
+      httpOnly: true, // Prevents JavaScript access to cookies
+    },
   })
 );
 
@@ -76,11 +85,23 @@ hbs.registerPartials(path.join(__dirname, "/views/partials"));
 app.get("/", authenticate, async (req, res) => {
   const blogs = await Blog.find({}).sort({ createdAt: -1 });
   console.log(blogs);
+  
+  const specialAttension = req.session.specialAttension
+  const resetPassAttension = req.session.resetPassAttension
+  
+  req.session.specialAttension = false
+  req.session.resetPassAttension = false
+  
+  console.log(specialAttension)
+  console.log(resetPassAttension)
+  console.log(req.session.specialAttension)
+  console.log(req.session.resetPassAttension)
 
   return res.render("home", {
     user: req.user,
     blogs,
-    specialAttension: req.session.specialAttension,
+    specialAttension,
+    resetPassAttension,
   });
 });
 

@@ -1,12 +1,12 @@
 const User = require("../models/user.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { setToken } = require("../services/jwt");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
 
 async function handleUserLogin(req, res) {
   const { email, password } = req.body;
   const user = await User.findOne({
-    email,
+    email
   });
   if (!user) return res.render("login", { err: "Invalid Email Address" });
   bcrypt.compare(password, user.password, function (err, result) {
@@ -14,6 +14,8 @@ async function handleUserLogin(req, res) {
     if (result) {
       const token = setToken(user);
       req.session.token = token;
+      req.session.specialAttension = `Successfully Logged In`;
+      console.log(req.session)
       res.redirect("/");
     }
   });
@@ -26,22 +28,24 @@ async function handleUserSignup(req, res) {
       return res.render("signup", { err: "All fields are required" });
     else if (password.length < 6)
       return res.render("signup", {
-        err: "Password must be at least 6 characters",
+        err: "Password must be at least 6 characters"
       });
     else if (name.length < 3)
       return res.render("signup", {
-        err: "Name must be at least 3 characters",
+        err: "Name must be at least 3 characters"
       });
     else if (email.length < 6)
       return res.render("signup", {
-        err: "Email must be at least 6 characters",
+        err: "Email must be at least 6 characters"
       });
     else if (!email.includes("@"))
       return res.render("signup", { err: "Invalid Email Address" });
-    else if (await User.findOne({email}))
+    else if (await User.findOne({ email }))
       return res.render("signup", { err: "Email Address is already logged" });
     else if (password !== confirm)
-      return res.render("signup", { err: "Passwords do not match Confirm Password" });
+      return res.render("signup", {
+        err: "Passwords do not match Confirm Password"
+      });
 
     bcrypt.genSalt(10, function (err, salt) {
       bcrypt.hash(password, salt, async function (err, hash) {
@@ -49,10 +53,11 @@ async function handleUserSignup(req, res) {
         const user = await User.create({
           name,
           email,
-          password: hash,
+          password: hash
         });
         const token = await setToken(user);
         req.session.token = token;
+        req.session.specialAttension = `Successfully Created a new account`;
         res.redirect("/");
       });
     });
@@ -68,6 +73,7 @@ async function handleUserSignup(req, res) {
 
 async function handleUserLogout(req, res) {
   req.session.token = null;
+  req.session.specialAttension = `Successfully Logged Out`;
   res.redirect("/");
 }
 
@@ -77,6 +83,7 @@ async function handleUserdelete(req, res) {
   console.log(deleteDetails);
 
   req.session.token = null;
+  req.session.specialAttension = `Successfully Deleted the account `;
   res.redirect("/");
 }
 
@@ -91,7 +98,7 @@ async function handleUserView(req, res) {
 async function handleUserUpdateImage(req, res) {
   const { id } = req.user;
   const user = await User.findByIdAndUpdate(id, {
-    imageUrl: `/images/user/${req.file.filename}`,
+    imageUrl: `/images/user/${req.file.filename}`
   });
   console.log(user);
   res.redirect("/user/");
@@ -103,38 +110,40 @@ async function handleUserForgot(req, res) {
   console.log(user);
   const password = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
   console.log(password);
-  
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: "razinmohammedpt@gmail.com",
-      pass: "bhvcrjyicjqiuqkv",
-    },
+      pass: "bhvcrjyicjqiuqkv"
+    }
   });
 
   var mailOptions = {
     from: "razinmohammedpt@gmail.com",
     to: email,
     subject: "Get Your Code",
-    text: `your code is ${password}`,
+    text: `your code is ${password}`
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.error("Error while sending email:", error);
-      return res.status(500).json({ status: false, message: "Failed to send email" });
+      return res
+        .status(500)
+        .json({ status: false, message: "Failed to send email" });
     } else {
       console.log("Email sent: " + info.response);
       return res.status(200).json({ status: true, code: password });
     }
   });
-  
+
   res.json({ status: true, code: password });
 }
 
 async function handleUserForgotSuccess(req, res) {
   console.log(req.body);
-  
+
   const { email } = req.body;
   const user = await User.findOne({ email });
   console.log(email);
@@ -142,10 +151,44 @@ async function handleUserForgotSuccess(req, res) {
   if (user) {
     const token = setToken(user);
     req.session.token = token;
-    res.json({status: true});
+    req.session.resetPassAttension = true;
+    res.json({ status: true });
   } else {
-    res.end("can't find user with email" + email)
+    res.end("can't find user with email" + email);
   }
+}
+
+async function handleUserReset(req, res) {
+  console.log(req.body);
+  const { email, password } = req.body;
+
+  if (!password) return res.render("signup", { err: "Password is required" });
+  else if (password.length < 6)
+    return res.render("signup", {
+      err: "Password must be at least 6 characters"
+    });
+
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, async function (err, hash) {
+      if (err) return res.render("signup", { err: "Error creating account" });
+      const user = await User.findOneAndUpdate(
+        { email },
+        {
+          $set: {
+            password: hash
+          }
+        }
+      );
+      if (user) {
+        const token = setToken(user);
+        req.session.token = token;
+        req.session.specialAttension = `You are Successfully reseted the password`;
+        res.redirect("/");
+      } else {
+        res.end("can't find user with email" + email);
+      }
+    });
+  });
 }
 
 module.exports = {
@@ -157,4 +200,5 @@ module.exports = {
   handleUserUpdateImage,
   handleUserForgot,
   handleUserForgotSuccess,
+  handleUserReset
 };

@@ -1,4 +1,5 @@
 const express = require("express")
+const authorize = require("../middlewares/authorize.middleware.js");
 
 const router = express.Router()
 
@@ -22,6 +23,12 @@ router.get('/create-blog', (req , res) => {
 
 router.get('/forgot', (req , res) => {
   res.render('forgot', {
+    user: req.user
+  })
+});
+
+router.get('/reset-password', authorize,(req , res) => {
+  res.render('reset', {
     user: req.user
   })
 });

@@ -34,7 +34,13 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/user/">Account</a></li>
               <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-              <li><a class="dropdown-item" href="/user/delete">Delete</a></li>
+              <li><button class="dropdown-item" onclick="
+                const deleteConfirm = confirm('Are you sure to delete this account')
+                
+                if (deleteConfirm) {
+                  location.href = '/user/delete'
+                } 
+              ">Delete</button></li>
             </ul>
           </li>
         </ul>
