@@ -133,6 +133,7 @@ async function handleUserForgot(req, res) {
       console.log("Email sent: " + info.response);
       return res.status(200).json({ status: true, code: password });
     });
+  }
   } catch (error) {
     console.error("Error in handleUserForgot:", error);
     return res
