@@ -67,9 +67,10 @@
   let code;
   let email = document.getElementById('email');
 
+
   formForgot.addEventListener('submit', async (event) => {
     event.preventDefault();
-    email = email.value
+    email = email.value;
     const response = await fetch('/user/forgot', {
       method: 'POST',
       headers: {

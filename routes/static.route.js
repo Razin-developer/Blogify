@@ -33,5 +33,9 @@ router.get('/reset-password', authorize,(req , res) => {
   })
 });
 
+router.get('/reset-password/email',(req , res) => {
+  res.render('reset')
+});
+
 
 module.exports = router

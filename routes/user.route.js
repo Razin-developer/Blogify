@@ -8,7 +8,6 @@ const {
   handleUserUpdateImage,
   handleUserForgot,
   handleUserForgotSuccess,
-  handleUserGoogleLogin,
   handleUserReset
 } = require("../controllers/user.controller.js");
 const authorize = require("../middlewares/authorize.middleware.js");

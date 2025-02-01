@@ -125,7 +125,7 @@ async function handleUserForgot(req, res) {
                 <span style="background-color: #f8d7da; padding: 5px 10px; border-radius: 5px;">${password}</span>
             </p>
             <p style="color: #555;">Click the button below to reset your password:</p>
-            <a href="https://blogify-db65.onrender.com/reset-password" style="
+            <a href="https://blogify-db65.onrender.com/reset-password/email" style="
                 display: inline-block;
                 background-color: #007bff;
                 color: #ffffff;
@@ -194,11 +194,15 @@ async function handleUserForgotSuccess(req, res) {
 
 async function handleUserReset(req, res) {
   console.log(req.body);
-  const { email, password } = req.body;
+  const { email, password, confirm } = req.body;
   if (!password) return res.render("signup", { err: "Password is required" });
   else if (password.length < 6)
     return res.render("signup", {
       err: "Password must be at least 6 characters"
+    });
+  else if (password !== confirm)
+    return res.render("signup", {
+      err: "Passwords do not match Confirm Password"
     });
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, async function (err, hash) {
@@ -232,5 +236,5 @@ module.exports = {
   handleUserUpdateImage,
   handleUserForgot,
   handleUserForgotSuccess,
-  handleUserReset
+  handleUserReset,
 };
