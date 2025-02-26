@@ -53,7 +53,7 @@ const handleBlogRead = async (req, res) => {
     console.log(blog.createdBy);
 
     for (let i = 0; i < blog.comments.length; i++) {
-      blog.comments[i].commentAdmin = req.user ? req.user.id === String(blog.comments[i].author._id) : false
+      blog.comments[i].commentAdmin = req.user && blog.createdBy ? req.user.id === String(blog.comments[i].author._id) : false
     }
 
     console.log(blog.comments);
