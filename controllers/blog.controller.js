@@ -42,7 +42,7 @@ const handleBlogRead = async (req, res) => {
     let blogAdmin = false
     
     console.log(blog);
-    if (req.user && !blog.createdBy) {
+    if (req.user && blog.createdBy) {
       blogAdmin = req.user.id === String(blog.createdBy._id) // Check if the user is the blog creator
     } else {
       blogAdmin = false
